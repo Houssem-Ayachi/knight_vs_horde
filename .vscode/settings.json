@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Knigh_vs_Horde.slnx"
+    "dotnet.defaultSolution": "Knigh_vs_Horde.slnx",
+    "FSharp.suggestGitignore": false
 }
