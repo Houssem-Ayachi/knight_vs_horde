@@ -143,4 +143,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XPOrbs
   xpValue: 0
   moveSpeed: 0
-  attractionRange: 0
+  attractionRange: 1

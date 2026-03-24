@@ -48,7 +48,8 @@ public class Ennemies : MonoBehaviour
 
     void FollowPlayer()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
+        // Force le calcul en 2D (ignore Z)
+        Vector2 direction = ((Vector2)player.position - (Vector2)transform.position).normalized;
         rb.linearVelocity = direction * enemyData.moveSpeed;
     }
 
@@ -70,7 +71,6 @@ public class Ennemies : MonoBehaviour
         }
     }
 
-    // Méthode appelée quand l'ennemi meurt
     public void Die()
     {
         // Lâcher un orbe XP
@@ -83,10 +83,8 @@ public class Ennemies : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Méthode pour prendre des dégâts (à appeler depuis un système de combat)
     public void TakeDamage(int damage)
     {
-        // Pour l'instant, on fait mourir l'ennemi directement
         Die();
     }
 }
