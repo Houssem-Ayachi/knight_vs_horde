@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private float speed;
     private int health;
+    private int maxHealth;
     private float healthBarWidth = 0.31f;
 
     public PlayerDefaults playerDefaultStats;
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
         speed = playerDefaultStats.speed;
         health = playerDefaultStats.health;
+        maxHealth = playerDefaultStats.health;
     }
 
     // Update is called once per frame
@@ -41,12 +43,12 @@ public class PlayerMovement : MonoBehaviour
     {
         _direction = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if(_direction.x != 0)
+        if (_direction.x != 0)
         {
             spriteRenderer.flipX = _direction.x < 0;
         }
 
-        if(!_direction.Equals(Vector2.zero))
+        if (!_direction.Equals(Vector2.zero))
         {
             animator.SetBool("isRunning", true);
         }
@@ -60,40 +62,38 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.linearVelocity = _direction.normalized * speed;
     }
-
-    void OnCollisionEnter2D(Collision2D collision)
+    
+    // Applique les dégâts au joueur et met à jour la barre de vie
+    public void TakeDamage(int damage)
     {
-        if(collision.collider.gameObject.tag == "Enemy")
-        {
-            UpdateHealth();
-        }
-    }
-
-    void ApplyHit()
-    {
-
-    }
-
-    void UpdateHealth()
-    {
-        int damage = 50;
+        if (health <= 0) return; // Ne pas prendre de dégâts si déjà mort
 
         health -= damage;
+        Debug.Log($"Joueur prend {damage} dégâts. Vie restante : {health}/{maxHealth}");
 
-        if(health <= 0 && !animator.GetBool("isDead"))
+        if (health <= 0 && !animator.GetBool("isDead"))
         {
             animator.SetBool("isDead", true);
+            health = 0; // S'assurer que la vie ne devient pas négative
+            
+            // Déclencher le Game Over
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TriggerGameOver();
+            }
         }
 
         UpdateHealthBarSprite(damage);
     }
-
+    
+    // Réduit la taille du sprite de la barre de vie en fonction des dégâts subis
     void UpdateHealthBarSprite(int damage)
     {
-        float healthBarReductionAmount = healthBarWidth / 100 * damage;
+        // Utiliser maxHealth au lieu de 100 codé en dur
+        float healthBarReductionAmount = healthBarWidth / maxHealth * damage;
 
         Vector2 hbSize = HealthBarSpriteRenderer.size;
-        hbSize.x = Math.Clamp(hbSize.x - healthBarReductionAmount, 0, 31);
+        hbSize.x = Math.Clamp(hbSize.x - healthBarReductionAmount, 0, healthBarWidth);
 
         HealthBarSpriteRenderer.size = hbSize;
     }

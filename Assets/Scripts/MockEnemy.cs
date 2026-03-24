@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class MockEnemy : MonoBehaviour
 {
-    private bool isBouncing = false;
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 4f;
+    
+    [Header("Bounce Settings")]
+    [SerializeField] private float bounceForce = 100f;
+    [SerializeField] private float bounceDuration = 0.5f;
 
+    private bool isBouncing = false;
     private Rigidbody2D rb;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,23 +26,23 @@ public class MockEnemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(!isBouncing)
+        if (!isBouncing)
         {
-            rb.linearVelocity = Vector2.right * 4;
+            rb.linearVelocity = Vector2.right * moveSpeed;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.tag != "Player") return;
+        if (collision.collider.tag != "Player") return;
 
         Vector2 bounceDir = (transform.position - collision.transform.position).normalized;
 
         rb.linearVelocity = Vector2.zero;
-        rb.AddForce(bounceDir * 100);
+        rb.AddForce(bounceDir * bounceForce);
 
         isBouncing = true;
-        Invoke(nameof(StopBouncing), 0.5f);
+        Invoke(nameof(StopBouncing), bounceDuration);
     }
 
     private void StopBouncing()
