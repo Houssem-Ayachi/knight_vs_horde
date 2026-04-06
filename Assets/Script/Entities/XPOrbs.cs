@@ -3,21 +3,27 @@ using UnityEngine;
 public class XPOrbs : MonoBehaviour
 {
     [Header("Valeur XP")]
-    [Tooltip("Quantité d'XP donnée au joueur")]
+    [Tooltip("Quantite d'XP donnee au joueur")]
     [SerializeField] private int xpValue;
 
-    [Header("Paramètres de déplacement")]
-    [Tooltip("Vitesse de déplacement de l'orbe vers le joueur")]
+    [Header("Parametres de deplacement")]
+    [Tooltip("Vitesse de deplacement de l'orbe vers le joueur")]
     [SerializeField] private float moveSpeed;
 
-    [Tooltip("Distance à laquelle l'orbe commence à être attiré par le joueur")]
+    [Tooltip("Distance a laquelle l'orbe commence a etre attire par le joueur")]
     [SerializeField] private float attractionRange;
 
     private Transform player;
-    private bool isBeingAttracted = false;
+    private Rigidbody2D rb;
+
+    private bool shouldFollowPlayer = false;
+    
+    public float speedMultiplier = 1.05f;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
@@ -27,27 +33,34 @@ public class XPOrbs : MonoBehaviour
 
     void Update()
     {
-        if (player == null)
-            return;
-
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (distance <= attractionRange)
         {
-            isBeingAttracted = true;
+            shouldFollowPlayer = true;
         }
+    }
 
-        if (isBeingAttracted)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-        }
+    void FixedUpdate()
+    {
+        if(!shouldFollowPlayer)
+            return;
+
+       FollowPlayer(); 
+    }
+
+    void FollowPlayer()
+    {
+        Vector2 direction = (player.position - transform.position).normalized;
+        rb.linearVelocity = direction * moveSpeed;
+
+        moveSpeed *= speedMultiplier;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Orbe XP ramassé !");
             Destroy(gameObject);
         }
     }

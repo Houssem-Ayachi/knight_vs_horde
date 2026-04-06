@@ -3,7 +3,7 @@ using UnityEngine;
 public class Ennemies : MonoBehaviour
 {
     [Header("Configuration")]
-    [SerializeField] private EnnemiesData enemyData;
+    [SerializeField] private EnemyData enemyData;
 
     [Header("XP Drop")]
     [SerializeField] private GameObject xpOrbPrefab;
@@ -58,14 +58,12 @@ public class Ennemies : MonoBehaviour
         {
             spriteRenderer.color = enemyData.enemyColor;
         }
-        transform.localScale = enemyData.enemyScale;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Collision avec le joueur !");
             Die();
         }
     }

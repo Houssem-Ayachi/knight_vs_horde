@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private float speed;
     private int health;
@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _direction = Vector2.zero;
     private Animator animator;
     private SpriteRenderer HealthBarSpriteRenderer;
+    private PlayerLevel playerLevel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         HealthBarSpriteRenderer = HealthBar.GetComponent<SpriteRenderer>();
+        playerLevel = GetComponent<PlayerLevel>();
 
         speed = playerDefaultStats.speed;
         health = playerDefaultStats.health;
@@ -65,24 +67,30 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.collider.gameObject.tag == "Enemy")
         {
-            UpdateHealth();
+
         }
     }
 
-    void ApplyHit()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if(collision.tag == "xp_orb")
+        {
+            playerLevel.AddXP(10);
+        }
     }
 
-    void UpdateHealth()
+    public void TakeDamage(int damage)
     {
-        int damage = 50;
-
         health -= damage;
 
         if(health <= 0 && !animator.GetBool("isDead"))
         {
+            // player is dead
             animator.SetBool("isDead", true);
+            // stop player from moving
+            rb.linearVelocity = Vector2.up;
+
+            Debug.Log("player is dead");
         }
 
         UpdateHealthBarSprite(damage);

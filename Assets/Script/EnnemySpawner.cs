@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Paramètres de spawn")]
+    [Header("Parametres de spawn")]
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private float spawnInterval;
     [SerializeField] private float spawnDistance;
