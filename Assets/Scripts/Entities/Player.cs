@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float speed;
-    private int health;
-    private int maxHealth;
     private float healthBarWidth = 0.31f;
 
     public PlayerDefaults playerDefaultStats;
@@ -18,7 +15,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer HealthBarSpriteRenderer;
     private PlayerLevel playerLevel;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private PlayerStats Stats => PlayerStats.Instance;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -26,16 +24,23 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         HealthBarSpriteRenderer = HealthBar.GetComponent<SpriteRenderer>();
         playerLevel = GetComponent<PlayerLevel>();
-
-        speed = playerDefaultStats.speed;
-        health = playerDefaultStats.health;
-        maxHealth = playerDefaultStats.health;
     }
 
-    // Update is called once per frame
+    void OnEnable()
+    {
+        // S'abonner à l'event de changement de santé
+        PlayerStats.OnHealthChanged += UpdateHealthBarSprite;
+    }
+
+    void OnDisable()
+    {
+        // Se désabonner
+        PlayerStats.OnHealthChanged -= UpdateHealthBarSprite;
+    }
+
     void Update()
     {
-        if (health > 0)
+        if (Stats != null && Stats.CurrentHealth > 0)
         {
             CalculateDirection();
         }
@@ -62,11 +67,15 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = _direction.normalized * speed;
+        if (Stats != null)
+        {
+            rb.linearVelocity = _direction.normalized * Stats.CurrentSpeed;
+        }
     }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "xp_orb")
+        if (collision.tag == "xp_orb")
         {
             playerLevel.AddXP(10);
         }
@@ -74,37 +83,37 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (health <= 0) return; // Ne pas prendre de d�g�ts si d�j� mort
+        if (Stats == null || Stats.CurrentHealth <= 0) return;
 
-        health -= damage;
+        int actualDamage = Stats.CalculateDamageTaken(damage);
+        Stats.TakeDamage(actualDamage);
 
-        if (health <= 0 && !animator.GetBool("isDead"))
+        if (Stats.CurrentHealth <= 0 && !animator.GetBool("isDead"))
         {
-            // player is dead
             animator.SetBool("isDead", true);
-            health = 0; // S'assurer que la vie ne devient pas n�gative
             
-            // D�clencher le Game Over
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.TriggerGameOver();
             }
-            // stop player from moving
-            rb.linearVelocity = Vector2.up;
+            rb.linearVelocity = Vector2.zero;
         }
-
-        UpdateHealthBarSprite(damage);
     }
     
-    // R�duit la taille du sprite de la barre de vie en fonction des d�g�ts subis
-    void UpdateHealthBarSprite(int damage)
+    /// <summary>
+    /// Met à jour la barre de vie (appelé automatiquement quand la santé change)
+    /// </summary>
+    void UpdateHealthBarSprite(int currentHealth, int maxHealth)
     {
-        // Utiliser maxHealth au lieu de 100 cod� en dur
-        float healthBarReductionAmount = healthBarWidth / maxHealth * damage;
+        if (HealthBarSpriteRenderer == null) return;
 
+        float healthPercentage = (float)currentHealth / maxHealth;
+        
         Vector2 hbSize = HealthBarSpriteRenderer.size;
-        hbSize.x = Math.Clamp(hbSize.x - healthBarReductionAmount, 0, healthBarWidth);
+        hbSize.x = healthBarWidth * healthPercentage;
 
         HealthBarSpriteRenderer.size = hbSize;
+
+        Debug.Log($"[Player] Barre de vie mise à jour: {healthPercentage * 100:F0}%");
     }
 }

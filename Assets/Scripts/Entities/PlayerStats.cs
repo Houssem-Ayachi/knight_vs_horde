@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class PlayerStats : MonoBehaviour
     public float WeaponDamageMultiplier { get; private set; }
     public float Armor { get; private set; }
     public float AttackSpeedMultiplier { get; private set; }
+
+    // Event déclenché quand la santé change
+    public static event Action<int, int> OnHealthChanged; // (currentHealth, maxHealth)
 
     private void Awake()
     {
@@ -42,7 +46,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // MÉTHODES D'AMÉLIORATION
+    // MÉTHODES D'AMÉLIORATION (appelées par les upgrades)
     // ═══════════════════════════════════════════════════════════════
 
     /// <summary>
@@ -61,7 +65,10 @@ public class PlayerStats : MonoBehaviour
     {
         CurrentMaxHealth += amount;
         CurrentHealth += amount;
-        Debug.Log($"[PlayerStats] HP Max: {CurrentMaxHealth}");
+        Debug.Log($"[PlayerStats] HP Max: {CurrentMaxHealth}, HP actuel: {CurrentHealth}");
+        
+        // Notifier que la santé a changé
+        OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
     }
 
     /// <summary>
@@ -78,7 +85,7 @@ public class PlayerStats : MonoBehaviour
     /// </summary>
     public void IncreaseArmor(float amount)
     {
-        Armor = Mathf.Min(Armor + amount, 75f); // Cap à 75%
+        Armor = Mathf.Min(Armor + amount, 75f);
         Debug.Log($"[PlayerStats] Armure: {Armor}%");
     }
 
@@ -98,10 +105,29 @@ public class PlayerStats : MonoBehaviour
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, CurrentMaxHealth);
         Debug.Log($"[PlayerStats] Soigné! HP: {CurrentHealth}/{CurrentMaxHealth}");
+        
+        // Notifier que la santé a changé
+        OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // MÉTHODES DE COMBAT
+    // ═══════════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Inflige des dégâts au joueur
+    /// </summary>
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
+        Debug.Log($"[PlayerStats] Dégâts reçus: {damage}, HP restant: {CurrentHealth}/{CurrentMaxHealth}");
+        
+        // Notifier que la santé a changé
+        OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
     }
 
     /// <summary>
-    /// Calcule les dégâts finaux avec le multiplicateur
+    /// Calcule les dégâts infligés avec le multiplicateur
     /// </summary>
     public int CalculateDamage(int baseDamage)
     {
@@ -114,6 +140,6 @@ public class PlayerStats : MonoBehaviour
     public int CalculateDamageTaken(int incomingDamage)
     {
         float reduction = 1f - (Armor / 100f);
-        return Mathf.RoundToInt(incomingDamage * reduction);
+        return Mathf.Max(1, Mathf.RoundToInt(incomingDamage * reduction)); // Minimum 1 dégât
     }
 }
