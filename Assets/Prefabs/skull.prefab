@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8261957058215220569}
   - component: {fileID: 190222873841711779}
   - component: {fileID: 8942417287380960012}
-  - component: {fileID: -3185701010484862602}
+  - component: {fileID: 8799271732219621616}
   m_Layer: 0
   m_Name: skull
   m_TagString: Enemy
@@ -167,7 +167,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.14, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &-3185701010484862602
+--- !u!114 &8799271732219621616
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,8 +176,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7365488143172018303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7bbaeba0f6896293a90efbdfc0c5dd0, type: 3}
+  m_Script: {fileID: 11500000, guid: 29147b2d405ef0544b11e932f6032de1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MockEnemy
-  enemyData: {fileID: 11400000, guid: 2c10bce2bf58a7d4b8415ff122ef00b0, type: 2}
-  xpOrbPrefab: {fileID: 6766110687594774582, guid: c384377edee77ff408409e8396000e96, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::Ennemy
+  enemyData: {fileID: 11400000, guid: feabafbf20e7cd7ad995240d85859b89, type: 2}
+  bounceDistance: 50

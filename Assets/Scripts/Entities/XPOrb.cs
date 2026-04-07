@@ -1,6 +1,7 @@
+using Unity.Mathematics;
 using UnityEngine;
 
-public class XPOrbs : MonoBehaviour
+public class XPOrb : MonoBehaviour
 {
     [Header("Valeur XP")]
     [Tooltip("Quantite d'XP donnee au joueur")]
@@ -17,7 +18,7 @@ public class XPOrbs : MonoBehaviour
     private Rigidbody2D rb;
 
     private bool shouldFollowPlayer = false;
-    
+
     public float speedMultiplier = 1.05f;
     private XPOrbPool orbPool;
 
@@ -34,7 +35,7 @@ public class XPOrbs : MonoBehaviour
 
     void OnEnable()
     {
-        isBeingAttracted = false;
+        shouldFollowPlayer = false;
 
         if (player == null)
         {
@@ -69,7 +70,7 @@ public class XPOrbs : MonoBehaviour
         Vector2 direction = (player.position - transform.position).normalized;
         rb.linearVelocity = direction * moveSpeed;
 
-        moveSpeed *= speedMultiplier;
+        moveSpeed = math.clamp(moveSpeed * speedMultiplier, 0, 20);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -80,7 +81,6 @@ public class XPOrbs : MonoBehaviour
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.AddXP(xpValue);
-                Debug.Log($"Orbe XP ramass� ! +{xpValue} XP");
             }
 
             ReturnToPool();
@@ -89,6 +89,7 @@ public class XPOrbs : MonoBehaviour
 
     void ReturnToPool()
     {
+        // TODO: i think this if statement is not needed caus when the object is fetched from the pool this orbPool attribute is set inside the PoolManager.SpawnXPOrb method
         if (orbPool == null)
         {
             orbPool = GetComponentInParent<XPOrbPool>();

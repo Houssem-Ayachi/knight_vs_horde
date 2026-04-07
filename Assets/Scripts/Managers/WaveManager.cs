@@ -138,6 +138,7 @@ public class WaveManager : MonoBehaviour
             }
         }
     }
+
     // Active la vague spécifiée et désactive les vagues précédentes
     void ActivateWave(int waveIndex)
     {
@@ -155,6 +156,7 @@ public class WaveManager : MonoBehaviour
             waves[i].isCompleted = true;
         }
     }
+
     // Spawner des ennemis pour la vague active en respectant la limite d'ennemis
     void SpawnEnemiesForCurrentWave()
     {
@@ -169,6 +171,7 @@ public class WaveManager : MonoBehaviour
             SpawnRandomEnemy(currentWave);
         }
     }
+
     // Spawner un ennemi aléatoire basé sur les types et les poids de la vague
     void SpawnRandomEnemy(Wave wave)
     {
@@ -198,7 +201,7 @@ public class WaveManager : MonoBehaviour
                         enemy.transform.position = spawnPos;
                         enemy.transform.rotation = Quaternion.identity;
 
-                        Ennemies enemyScript = enemy.GetComponent<Ennemies>();
+                        Ennemy enemyScript = enemy.GetComponent<Ennemy>();
                         if (enemyScript != null)
                         {
                             enemyScript.SetEnemyPool(pool);
@@ -241,6 +244,7 @@ public class WaveManager : MonoBehaviour
 
         return 0;
     }
+
     // Méthode pour trouver l'index du pool correspondant à un prefab donné
     int GetPoolIndexForPrefab(GameObject prefab)
     {

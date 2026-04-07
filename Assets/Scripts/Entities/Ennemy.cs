@@ -1,18 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
-public class Ennemies : MonoBehaviour
+public class Ennemy : MonoBehaviour
 {
     [Header("Configuration")]
-    [SerializeField] private EnemyData enemyData;
+    [SerializeField] private EnnemiesData enemyData;
 
-    private Transform player;
+    private Transform playerTransform;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private EnemyPool enemyPool;
     private int currentHealth;
-    private bool isStunned = false;
     private Color originalColor;
+
+    private bool isBouncing = false;
+
+    public float bounceDistance = 50;
 
     void Start()
     {
@@ -28,14 +31,10 @@ public class Ennemies : MonoBehaviour
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("Aucun joueur trouvé ! Assurez-vous que le joueur a le tag 'Player'");
+            playerTransform = playerObject.transform;
         }
 
-        ApplyAppearance();
+        // ApplyAppearance();
         originalColor = enemyData.enemyColor;
     }
 
@@ -47,28 +46,28 @@ public class Ennemies : MonoBehaviour
         }
 
         currentHealth = enemyData != null ? enemyData.maxHealth : 1;
-        isStunned = false;
+        isBouncing = false;
 
-        if (player == null)
+        if (playerTransform == null)
         {
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
             if (playerObject != null)
             {
-                player = playerObject.transform;
+                playerTransform = playerObject.transform;
             }
         }
 
         // Restaurer la couleur originale
         if (spriteRenderer != null && enemyData != null)
         {
-            spriteRenderer.color = enemyData.enemyColor;
+            // spriteRenderer.color = enemyData.enemyColor;
             originalColor = enemyData.enemyColor;
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (player != null && !isStunned)
+        if(!isBouncing)
         {
             FollowPlayer();
         }
@@ -76,7 +75,7 @@ public class Ennemies : MonoBehaviour
 
     void FollowPlayer()
     {
-        Vector2 direction = ((Vector2)player.position - (Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)playerTransform.position - (Vector2)transform.position).normalized;
         rb.linearVelocity = direction * enemyData.moveSpeed;
     }
 
@@ -84,7 +83,7 @@ public class Ennemies : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = enemyData.enemyColor;
+            // spriteRenderer.color = enemyData.enemyColor;
         }
     }
 
@@ -92,13 +91,23 @@ public class Ennemies : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
+            Player playerTransform = collision.gameObject.GetComponent<Player>();
+            if (playerTransform != null)
             {
-                playerMovement.TakeDamage(enemyData.damageToPlayer);
+                playerTransform.TakeDamage(enemyData.damageToPlayer);
             }
-            // L'ennemi NE MEURT PLUS automatiquement, seulement si TakeDamage() le tue
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag != "Weapon")
+            return;
+
+        int damageTaken = collision.gameObject.GetComponent<Weapon>().damage;
+        TakeDamage(damageTaken);
+
+        Bounce(collision.transform.position);
     }
 
     public void Die()
@@ -125,10 +134,12 @@ public class Ennemies : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log($"{gameObject.name} prend {damage} dégâts. Vie restante : {currentHealth}/{enemyData.maxHealth}");
-        
+
         // Effet de hit : changement de couleur et immobilisation
-        StartCoroutine(HitStunEffect());
+        // TODO: apply the hitStunEffect later when i fix it.
+        // StartCoroutine(HitStunEffect());
+
+        Bounce(playerTransform.position);
 
         if (currentHealth <= 0)
         {
@@ -136,43 +147,59 @@ public class Ennemies : MonoBehaviour
         }
     }
 
-    private IEnumerator HitStunEffect()
+    private void Bounce(Vector3 colliderPosition)
     {
-        if (enemyData == null) yield break;
+        Vector2 bounceDir = (transform.position - colliderPosition).normalized;
 
-        // Marquer comme étourdi pour arrêter le mouvement
-        isStunned = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(bounceDir * bounceDistance);
 
-        // Arrêter le mouvement
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-        }
-
-        // Changer la couleur en blanc (ou la couleur définie)
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = enemyData.hitColor;
-        }
-
-        // Attendre la durée du stun
-        yield return new WaitForSeconds(enemyData.hitStunDuration);
-
-        // Restaurer la couleur originale
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = originalColor;
-        }
-
-        // Permettre à nouveau le mouvement
-        isStunned = false;
+        isBouncing = true;
+        Invoke(nameof(StopBouncing), 0.5f);
     }
+
+    private void StopBouncing()
+    {
+        isBouncing = false;
+    }
+
+    // private IEnumerator HitStunEffect()
+    // {
+    //     if (enemyData == null) yield break;
+
+    //     // Marquer comme étourdi pour arrêter le mouvement
+    //     isStunned = true;
+
+    //     // Arrêter le mouvement
+    //     if (rb != null)
+    //     {
+    //         rb.linearVelocity = Vector2.zero;
+    //     }
+
+    //     // Changer la couleur en blanc (ou la couleur définie)
+    //     if (spriteRenderer != null)
+    //     {
+    //         spriteRenderer.color = enemyData.hitColor;
+    //     }
+
+    //     // Attendre la durée du stun
+    //     yield return new WaitForSeconds(enemyData.hitStunDuration);
+
+    //     // Restaurer la couleur originale
+    //     if (spriteRenderer != null)
+    //     {
+    //         spriteRenderer.color = originalColor;
+    //     }
+
+    //     // Permettre à nouveau le mouvement
+    //     isStunned = false;
+    // }
 
     void ReturnToPool()
     {
         // Arrêter toutes les coroutines en cours (pour éviter les bugs)
         StopAllCoroutines();
-        isStunned = false;
+        isBouncing = false;
 
         if (enemyPool == null)
         {

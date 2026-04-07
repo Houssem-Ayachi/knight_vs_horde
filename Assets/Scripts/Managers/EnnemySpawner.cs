@@ -1,4 +1,3 @@
-/*
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -16,18 +15,19 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private bool usePooling = true;
 
     private Transform player;
-    private float timer;
+    private float timer = 0;
 
     void Start()
     {
+        // finding the player's gameObject in the scene tree
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
             player = playerObject.transform;
 
-        // Vérifier que le PoolManager est disponible si le pooling est activé
-        if (usePooling && PoolManager.Instance == null)
+        // Vï¿½rifier que le PoolManager est disponible si le pooling est activï¿½
+        if (PoolManager.Instance == null)
         {
-            Debug.LogWarning("PoolManager non trouvé ! Le pooling des ennemis ne fonctionnera pas.");
+            Debug.LogWarning("PoolManager non trouvï¿½ ! Le pooling des ennemis ne fonctionnera pas.");
         }
     }
 
@@ -36,6 +36,7 @@ public class EnemySpawner : MonoBehaviour
         if (player == null || enemyPrefabs.Length == 0)
             return;
 
+        // calculating the passed time since the last enemy wave spawn
         timer += Time.deltaTime;
         if (timer >= spawnInterval)
         {
@@ -46,6 +47,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 SpawnEnemy();
             }
+
             timer = 0f;
         }
     }
@@ -67,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         
-        // Fallback : compter les ennemis dans la scène
+        // Fallback : compter les ennemis dans la scï¿½ne
         return GameObject.FindGameObjectsWithTag("Enemy").Length;
     }
 
@@ -89,22 +91,18 @@ public class EnemySpawner : MonoBehaviour
                 {
                     enemy.transform.position = pos;
                     enemy.transform.rotation = Quaternion.identity;
-                    
+
                     // Informer l'ennemi de son pool
-                    Ennemies enemyScript = enemy.GetComponent<Ennemies>();
+                    Ennemy enemyScript = enemy.GetComponent<Ennemy>();
                     if (enemyScript != null)
                     {
                         enemyScript.SetEnemyPool(pool);
                     }
                 }
             }
-            else
-            {
-                Debug.LogWarning($"Aucun pool trouvé pour l'ennemi à l'index {index}. Assurez-vous que le PoolManager a les bons prefabs assignés.");
-            }
         }
-        
-        // Fallback : méthode classique sans pooling
+
+        // Fallback : mï¿½thode classique sans pooling
         if (enemy == null)
         {
             enemy = Instantiate(enemyPrefabs[index], pos, Quaternion.identity);
@@ -112,4 +110,3 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 }
-*/

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MockEnemy : MonoBehaviour
 {
-    [SerializeField] private EnemyData enemyData;
+    [SerializeField] private EnnemiesData enemyData;
     [SerializeField] private GameObject xpOrbPrefab;
 
     private float moveSpeed;
@@ -14,7 +14,6 @@ public class MockEnemy : MonoBehaviour
     public float bounceDistance = 200;
 
     private Rigidbody2D rb;
-    private GameObject playerObj;
     private Player player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,18 +21,12 @@ public class MockEnemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        playerObj = GameObject.FindGameObjectWithTag("Player");
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.GetComponent<Player>();
 
         moveSpeed = enemyData.moveSpeed;
-        health = enemyData.health;
+        health = enemyData.maxHealth;
         damageToPlayer = enemyData.damageToPlayer;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void FixedUpdate()
@@ -52,8 +45,6 @@ public class MockEnemy : MonoBehaviour
         Bounce(collision.transform.position);
 
         player.TakeDamage(damageToPlayer);
-
-        ApplyDamage(50);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -67,6 +58,8 @@ public class MockEnemy : MonoBehaviour
         Bounce(collision.transform.position);
     }
 
+    // TODO: i should create a script for bounceable objects called "bounceable" for example
+    // that way i can add it to any gameObject that i want to make it bounce (not sure if it is needed).
     private void Bounce(Vector3 colliderPosition)
     {
         Vector2 bounceDir = (transform.position - colliderPosition).normalized;

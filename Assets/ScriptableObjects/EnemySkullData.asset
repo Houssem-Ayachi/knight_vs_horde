@@ -9,10 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f51e127ec17c1d4ea056e0603eddc0b, type: 3}
-  m_Name: Ennemies Data
+  m_Script: {fileID: 11500000, guid: ca702bd70e22e615e970c0b63b49829c, type: 3}
+  m_Name: EnemySkullData
   m_EditorClassIdentifier: Assembly-CSharp::EnnemiesData
-  moveSpeed: 2
-  health: 100
-  damageToPlayer: 1
-  enemyColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  moveSpeed: 3
+  maxHealth: 100
+  damageToPlayer: 10
+  xpReward: 20
+  hitStunDuration: 0.5
+  hitColor: {r: 1, g: 1, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0, b: 0, a: 1}
+  enemyScale: {x: 1, y: 1, z: 1}

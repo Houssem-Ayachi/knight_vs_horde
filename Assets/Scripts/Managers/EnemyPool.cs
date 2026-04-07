@@ -14,7 +14,6 @@ public class EnemyPool : MonoBehaviour
     {
         if (isInitialized)
         {
-            Debug.LogWarning("EnemyPool déjà initialisé !");
             return;
         }
 
@@ -27,14 +26,14 @@ public class EnemyPool : MonoBehaviour
 
     void InitializePool()
     {
-        // Créer un parent pour organiser les ennemis dans la hiérarchie
+        // Crï¿½er un parent pour organiser les ennemis dans la hiï¿½rarchie
         poolParent = new GameObject($"{enemyPrefab.name} Pool").transform;
         poolParent.SetParent(transform);
 
         // Initialiser la liste
         pool = new List<GameObject>();
 
-        // Pré-instancier les ennemis
+        // Prï¿½-instancier les ennemis
         for (int i = 0; i < poolSize; i++)
         {
             CreateNewEnemy();
@@ -61,7 +60,7 @@ public class EnemyPool : MonoBehaviour
             }
         }
 
-        // Si aucun ennemi n'est disponible et que le pool peut s'étendre
+        // Si aucun ennemi n'est disponible et que le pool peut s'ï¿½tendre
         if (canExpand)
         {
             GameObject newEnemy = CreateNewEnemy();

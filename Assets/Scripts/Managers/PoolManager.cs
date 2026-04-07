@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Gestionnaire centralisé pour tous les pools d'objets du jeu.
-/// Singleton persistant entre les scènes.
+/// Gestionnaire centralisï¿½ pour tous les pools d'objets du jeu.
+/// Singleton persistant entre les scï¿½nes.
 /// </summary>
 public class PoolManager : MonoBehaviour
 {
@@ -43,11 +43,10 @@ public class PoolManager : MonoBehaviour
 
             xpOrbPool = poolObject.AddComponent<XPOrbPool>();
             xpOrbPool.Initialize(xpOrbPrefab, xpOrbPoolSize, true);
-            Debug.Log($"XPOrb Pool initialisé avec {xpOrbPoolSize} objets.");
         }
         else
         {
-            Debug.LogWarning("XPOrb Prefab non assigné dans le PoolManager !");
+            Debug.LogWarning("XPOrb Prefab non assignï¿½ dans le PoolManager !");
         }
 
         // Initialiser les pools d'ennemis (optionnel)
@@ -66,19 +65,19 @@ public class PoolManager : MonoBehaviour
                     pool.Initialize(enemyPrefabs[i], enemyPoolSize, true);
 
                     enemyPools[i] = pool;
-                    Debug.Log($"Enemy Pool '{enemyPrefabs[i].name}' initialisé avec {enemyPoolSize} objets.");
+                    Debug.Log($"Enemy Pool '{enemyPrefabs[i].name}' initialisï¿½ avec {enemyPoolSize} objets.");
                 }
             }
         }
     }
 
-    /// <summary>Récupère le pool d'orbes XP.</summary>
+    /// <summary>Rï¿½cupï¿½re le pool d'orbes XP.</summary>
     public XPOrbPool GetXPOrbPool()
     {
         return xpOrbPool;
     }
 
-    /// <summary>Récupère un pool d'ennemis spécifique par index.</summary>
+    /// <summary>Rï¿½cupï¿½re un pool d'ennemis spï¿½cifique par index.</summary>
     public EnemyPool GetEnemyPool(int index)
     {
         if (enemyPools != null && index >= 0 && index < enemyPools.Length)
@@ -88,25 +87,22 @@ public class PoolManager : MonoBehaviour
         return null;
     }
 
-    /// <summary>Récupère tous les pools d'ennemis.</summary>
+    /// <summary>Rï¿½cupï¿½re tous les pools d'ennemis.</summary>
     public EnemyPool[] GetAllEnemyPools()
     {
         return enemyPools;
     }
 
-    /// <summary>Spawn un orbe XP à une position donnée.</summary>
+    /// <summary>Spawn un orbe XP ï¿½ une position donnï¿½e.</summary>
     public GameObject SpawnXPOrb(Vector3 position, int xpValue = 20)
     {
-        if (xpOrbPool == null)
-        {
-            Debug.LogError("XPOrb Pool non initialisé !");
-            return null;
-        }
-
         GameObject orb = xpOrbPool.GetOrb(position);
+
+        orb.SetActive(true);
+
         if (orb != null)
         {
-            XPOrbs orbScript = orb.GetComponent<XPOrbs>();
+            XPOrb orbScript = orb.GetComponent<XPOrb>();
             if (orbScript != null)
             {
                 orbScript.SetOrbPool(xpOrbPool);
