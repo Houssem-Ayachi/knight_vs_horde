@@ -2,39 +2,34 @@ using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour
 {
-    private int currentLevel = 1;
-    private int xpAmountToNextLevel = 100;
-    private int currentXpCollected = 0;
+    // Ce script délègue maintenant la gestion de l'XP au GameManager
+    // pour que tous les systèmes (HUD, Upgrades, etc.) soient synchronisés
 
-    public int CurrentLevel { get { return currentLevel; }}
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    public int CurrentLevel 
+    { 
+        get 
+        { 
+            if (GameManager.Instance != null)
+                return GameManager.Instance.CurrentLevel;
+            return 1;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Ajoute de l'XP via le GameManager (qui gère le level up et les events)
+    /// </summary>
     public void AddXP(int amount)
     {
-        currentXpCollected += amount;
-
-        if(currentXpCollected >= xpAmountToNextLevel)
+        Debug.Log($"[PlayerLevel] AddXP appelé avec {amount} XP");
+        
+        if (GameManager.Instance != null)
         {
-            int remainingXp = currentXpCollected - xpAmountToNextLevel;
-
-            currentLevel++;
-
-            currentXpCollected = remainingXp;
-
-            Debug.Log("level up!! -> " + currentLevel);
-
-            // TODO: increase the xpAmountToNextLevel attribute
+            GameManager.Instance.AddXP(amount);
+            Debug.Log($"[PlayerLevel] XP ajouté ! Total: {GameManager.Instance.CurrentXP}/{GameManager.Instance.XPToNextLevel}");
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerLevel] GameManager.Instance est NULL !");
         }
     }
 }

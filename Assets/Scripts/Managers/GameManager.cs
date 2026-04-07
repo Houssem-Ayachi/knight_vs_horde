@@ -53,6 +53,19 @@ public class GameManager : MonoBehaviour
         ResetStats();
     }
 
+    private void Start()
+    {
+        // Si on lance directement la scène Game (sans passer par le menu),
+        // on démarre automatiquement le jeu
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == SCENE_GAME && State != GameState.Playing)
+        {
+            Debug.Log("[GameManager] Démarrage automatique du jeu (scène Game lancée directement)");
+            State = GameState.Playing;
+            XPToNextLevel = baseXPPerLevel;
+        }
+    }
+
     private void Update()
     {
         if (State != GameState.Playing) return;
@@ -111,9 +124,17 @@ public class GameManager : MonoBehaviour
     /// <summary>Ajouter des points XP (depuis les ennemis tués, etc.)</summary>
     public void AddXP(int amount)
     {
-        if (State != GameState.Playing || amount <= 0) return;
+        if (amount <= 0) return;
+        
+        // Si on n'est pas en mode Playing, on force le mode Playing
+        if (State != GameState.Playing)
+        {
+            Debug.LogWarning($"[GameManager] AddXP appelé mais State={State}. Forçage en Playing.");
+            State = GameState.Playing;
+        }
 
         CurrentXP += amount;
+        Debug.Log($"[GameManager] XP ajouté: +{amount} → Total: {CurrentXP}/{XPToNextLevel}");
 
         // Level-up loop (en cas de gros gain d'XP d'un coup)
         while (CurrentXP >= XPToNextLevel)
@@ -121,6 +142,7 @@ public class GameManager : MonoBehaviour
             CurrentXP     -= XPToNextLevel;
             CurrentLevel++;
             XPToNextLevel  = Mathf.RoundToInt(baseXPPerLevel * Mathf.Pow(xpScalingMultiplier, CurrentLevel - 1));
+            Debug.Log($"[GameManager] 🎉 LEVEL UP! Niveau {CurrentLevel}");
             OnLevelUp?.Invoke(CurrentLevel);
         }
 
