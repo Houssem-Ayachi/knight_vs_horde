@@ -193,6 +193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2949055831339566398, guid: 65fc2dc3b8aaabb46b54f1a004e6793e, type: 3}
+      propertyPath: fireBallPrefab
+      value: 
+      objectReference: {fileID: 4669892363717048337, guid: c058b433f134d8425ae4c5e8619d97af, type: 3}
     - target: {fileID: 3275113110405700430, guid: 65fc2dc3b8aaabb46b54f1a004e6793e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -234,7 +238,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8109649370368253154, guid: 65fc2dc3b8aaabb46b54f1a004e6793e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65fc2dc3b8aaabb46b54f1a004e6793e, type: 3}

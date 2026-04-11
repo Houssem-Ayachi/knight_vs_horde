@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class RotatingSword : MonoBehaviour
 {
-
     public float orbitRadius = 1.5f;
     public float orbitSpeed = 90f; // degrees per second
 
