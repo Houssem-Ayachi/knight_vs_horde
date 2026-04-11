@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca702bd70e22e615e970c0b63b49829c, type: 3}
   m_Name: EnemySkullData
   m_EditorClassIdentifier: Assembly-CSharp::EnnemiesData
-  moveSpeed: 3
+  moveSpeed: 1
   maxHealth: 100
   damageToPlayer: 10
   xpReward: 20

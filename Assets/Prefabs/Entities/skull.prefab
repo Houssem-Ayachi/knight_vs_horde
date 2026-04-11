@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8261957058215220569}
   - component: {fileID: 190222873841711779}
   - component: {fileID: 8942417287380960012}
-  - component: {fileID: 8799271732219621616}
+  - component: {fileID: 3032473031038972447}
+  - component: {fileID: -2318457782807754925}
   m_Layer: 0
   m_Name: skull
   m_TagString: Enemy
@@ -167,7 +168,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.14, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &8799271732219621616
+--- !u!114 &3032473031038972447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,3 +182,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ennemy
   enemyData: {fileID: 11400000, guid: feabafbf20e7cd7ad995240d85859b89, type: 2}
   bounceDistance: 50
+--- !u!114 &-2318457782807754925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7365488143172018303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281d4f387c68a5259b15b5d3f44d7efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Poolable

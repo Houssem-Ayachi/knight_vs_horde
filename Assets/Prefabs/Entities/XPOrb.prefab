@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4269613703236760408}
   - component: {fileID: -5420777186354764856}
   - component: {fileID: 9141712391756328294}
+  - component: {fileID: 1345358070599216055}
   m_Layer: 0
   m_Name: XPOrb
   m_TagString: xp_orb
@@ -170,6 +171,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XPOrbs
   xpValue: 0
-  moveSpeed: 4
+  moveSpeed: 2.5
   attractionRange: 2
-  speedMultiplier: 1.11
+  speedMultiplier: 1.05
+--- !u!114 &1345358070599216055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6766110687594774582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281d4f387c68a5259b15b5d3f44d7efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Poolable

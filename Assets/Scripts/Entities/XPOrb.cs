@@ -16,15 +16,16 @@ public class XPOrb : MonoBehaviour
 
     private Transform player;
     private Rigidbody2D rb;
+    private Poolable poolable;
 
     private bool shouldFollowPlayer = false;
 
     public float speedMultiplier = 1.05f;
-    private XPOrbPool orbPool;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        poolable = GetComponent<Poolable>();
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
@@ -77,43 +78,14 @@ public class XPOrb : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Donner l'XP au joueur via le GameManager
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.AddXP(xpValue);
-            }
-
+            // player handles retrieving XP. (TODO: might change it later, make this script call a function on the player, dunno which is better)
             ReturnToPool();
         }
     }
 
     void ReturnToPool()
     {
-        // TODO: i think this if statement is not needed caus when the object is fetched from the pool this orbPool attribute is set inside the PoolManager.SpawnXPOrb method
-        if (orbPool == null)
-        {
-            orbPool = GetComponentInParent<XPOrbPool>();
-
-            if (orbPool == null && PoolManager.Instance != null)
-            {
-                orbPool = PoolManager.Instance.GetXPOrbPool();
-            }
-        }
-
-        if (orbPool != null)
-        {
-            orbPool.ReturnOrb(gameObject);
-        }
-        else
-        {
-            Debug.LogWarning("Aucun XPOrbPool trouv�, destruction de l'orbe");
-            Destroy(gameObject);
-        }
-    }
-
-    public void SetOrbPool(XPOrbPool pool)
-    {
-        orbPool = pool;
+        poolable.ReturnToPool();
     }
 
     public void SetXPValue(int value)
