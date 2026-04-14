@@ -13,7 +13,7 @@ public class PlayerLevel : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute de l'XP via le GameManager (qui g�re le level up et les events)
+    /// Ajoute de l'XP via le GameManager (qui gere le level up et les events)
     /// </summary>
     public void AddXP(int amount)
     {

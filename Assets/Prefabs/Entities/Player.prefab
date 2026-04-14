@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   playerDefaultStats: {fileID: 11400000, guid: 33ed72714312d158db0a5a62a1c77f95, type: 2}
   HealthBar: {fileID: 3281453482810318521}
+  xFacingDirection: 1
 --- !u!114 &4078433516905932693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +437,7 @@ PrefabInstance:
     - target: {fileID: 2594378951880617421, guid: 962a32f4465cbfbb4932135521d51eaa, type: 3}
       propertyPath: fireBallPrefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4669892363717048337, guid: c058b433f134d8425ae4c5e8619d97af, type: 3}
     - target: {fileID: 5199647869038407737, guid: 962a32f4465cbfbb4932135521d51eaa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

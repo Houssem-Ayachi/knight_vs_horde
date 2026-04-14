@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    Action onHit;
+
     public int damage = 50;
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -10,7 +13,7 @@ public class Weapon : MonoBehaviour
         {
             collision.gameObject.GetComponent<Ennemy>().TakeDamage(damage);
 
-            Destroy(gameObject);
+            onHit?.Invoke();
         }
     }
 }

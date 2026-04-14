@@ -64,7 +64,7 @@ public class PlayerStats : MonoBehaviour
     {
         CurrentMaxHealth += amount;
         CurrentHealth += amount;
-        
+
         // Notifier que la santé a changé
         OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
     }
@@ -117,14 +117,6 @@ public class PlayerStats : MonoBehaviour
         
         // Notifier que la santé a changé
         OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
-    }
-
-    /// <summary>
-    /// Calcule les dégâts infligés avec le multiplicateur
-    /// </summary>
-    public int CalculateDamage(int baseDamage)
-    {
-        return Mathf.RoundToInt(baseDamage * WeaponDamageMultiplier);
     }
 
     /// <summary>

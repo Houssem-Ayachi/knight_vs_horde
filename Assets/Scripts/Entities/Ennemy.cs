@@ -15,7 +15,6 @@ public class Ennemy : MonoBehaviour
     public float bounceDistance = 50;
 
     [SerializeField] private Material flashMaterial;
-    private Material defaultMaterial;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -23,8 +22,6 @@ public class Ennemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         poolable = GetComponent<Poolable>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        defaultMaterial = spriteRenderer.material;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)

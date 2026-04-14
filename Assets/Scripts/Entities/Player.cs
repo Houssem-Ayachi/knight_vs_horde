@@ -70,10 +70,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Stats != null)
-        {
-            rb.linearVelocity = _direction.normalized * Stats.CurrentSpeed;
-        }
+        rb.linearVelocity = _direction.normalized * Stats.CurrentSpeed;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -94,7 +91,7 @@ public class Player : MonoBehaviour
         if (Stats.CurrentHealth <= 0 && !animator.GetBool("isDead"))
         {
             animator.SetBool("isDead", true);
-            
+
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.TriggerGameOver();
@@ -102,7 +99,7 @@ public class Player : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
     }
-    
+
     /// <summary>
     /// Met à jour la barre de vie (appelé automatiquement quand la santé change)
     /// </summary>
@@ -111,7 +108,7 @@ public class Player : MonoBehaviour
         if (HealthBarSpriteRenderer == null) return;
 
         float healthPercentage = (float)currentHealth / maxHealth;
-        
+
         Vector2 hbSize = HealthBarSpriteRenderer.size;
         hbSize.x = healthBarWidth * healthPercentage;
 
