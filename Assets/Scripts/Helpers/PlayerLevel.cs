@@ -1,25 +1,53 @@
+using System;
 using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour
 {
-    public int CurrentLevel
-    { 
-        get
-        { 
-            if (GameManager.Instance != null)
-                return GameManager.Instance.CurrentLevel;
-            return 1;
-        }
+    public static PlayerLevel Instance;
+
+    [Header("XP / Leveling")]
+    [SerializeField] private int baseXPPerLevel = 30;
+    [SerializeField] private float xpScalingMultiplier = 1.1f;
+
+    public int CurrentXP { get; private set; }
+    public int CurrentLevel { get; private set; } = 1;
+    public int XPToNextLevel { get; private set; }
+    public float XPProgress => XPToNextLevel > 0 ? (float)CurrentXP / XPToNextLevel : 0f;
+
+    public event Action<int, int, float> OnXPChanged;
+    public event Action<int> OnLevelUp;
+
+    private void Awake()
+    {
+        if(Instance != null)
+            Destroy(this);
+        Instance = this;
+
+        DontDestroyOnLoad(gameObject);
+        ResetStats();
     }
 
-    /// <summary>
-    /// Ajoute de l'XP via le GameManager (qui gere le level up et les events)
-    /// </summary>
     public void AddXP(int amount)
     {
-        if (GameManager.Instance != null)
+        if (amount <= 0) return;
+
+        CurrentXP += amount;
+
+        while (CurrentXP >= XPToNextLevel)
         {
-            GameManager.Instance.AddXP(amount);
+            CurrentXP -= XPToNextLevel;
+            CurrentLevel++;
+            XPToNextLevel = Mathf.RoundToInt(baseXPPerLevel * Mathf.Pow(xpScalingMultiplier, CurrentLevel - 1));
+            OnLevelUp?.Invoke(CurrentLevel);
         }
+
+        OnXPChanged?.Invoke(CurrentXP, XPToNextLevel, XPProgress);
+    }
+
+    public void ResetStats()
+    {
+        CurrentXP = 0;
+        CurrentLevel = 1;
+        XPToNextLevel = baseXPPerLevel;
     }
 }

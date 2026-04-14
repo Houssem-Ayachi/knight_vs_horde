@@ -4,10 +4,11 @@ public class FireBall : MonoBehaviour
 {
     public Vector2 direction = Vector2.zero;
     public float speed;
-    public int damage = 100;
     public GameObject player;
 
     private Rigidbody2D rb;
+    private Weapon weaponComponent;
+
     // the distance (from the player) at which the fire ball should be destroyed.
     private float deathDoor = 20;
 
@@ -15,6 +16,9 @@ public class FireBall : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        weaponComponent = GetComponent<Weapon>();
+        weaponComponent.onHit = handleEnemyHit;
     }
 
     // Update is called once per frame
@@ -24,16 +28,6 @@ public class FireBall : MonoBehaviour
 
         if(isAtDeathDoor())
         {
-            Destroy(gameObject);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Enemy")
-        {
-            collision.gameObject.GetComponent<Ennemy>().TakeDamage(damage);
-
             Destroy(gameObject);
         }
     }
@@ -55,5 +49,10 @@ public class FireBall : MonoBehaviour
         float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
 
         return distanceFromPlayer >= deathDoor;
+    }
+
+    private void handleEnemyHit()
+    {
+
     }
 }

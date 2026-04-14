@@ -4,7 +4,6 @@ public class SideSlashAttack : MonoBehaviour
 {
     // how far from the player the attack should be
     public float offsetFromPlayer = 0.6f;
-    public int damage = 50;
 
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -18,14 +17,6 @@ public class SideSlashAttack : MonoBehaviour
     void Update()
     {
 
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Enemy")
-        {
-            collision.gameObject.GetComponent<Ennemy>().TakeDamage(damage);
-        }
     }
 
     public void initAttack()

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    Action onHit;
+    public Action onHit;
 
     public int damage = 50;
 

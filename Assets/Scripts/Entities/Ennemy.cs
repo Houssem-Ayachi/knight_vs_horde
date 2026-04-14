@@ -97,9 +97,7 @@ public class Ennemy : MonoBehaviour
     {
         currentHealth -= damage;
 
-        // TODO: make the enemy flash with a red color to indicate a hit.
-
-        FlashWhite();
+        FlashRed();
         Bounce(playerTransform.position);
 
         if (currentHealth <= 0)
@@ -124,10 +122,10 @@ public class Ennemy : MonoBehaviour
         isBouncing = false;
     }
 
-    public void FlashWhite()
+    public void FlashRed()
     {
-        Debug.Log("flashing white");
-        StartCoroutine(FlashCoroutine());
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(FlashCoroutine());
     }
 
     private IEnumerator FlashCoroutine()

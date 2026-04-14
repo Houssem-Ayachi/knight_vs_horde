@@ -73,14 +73,6 @@ public class Player : MonoBehaviour
         rb.linearVelocity = _direction.normalized * Stats.CurrentSpeed;
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "xp_orb")
-        {
-            playerLevel.AddXP(10);
-        }
-    }
-
     public void TakeDamage(int damage)
     {
         if (Stats == null || Stats.CurrentHealth <= 0) return;

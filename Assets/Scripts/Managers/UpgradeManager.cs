@@ -13,6 +13,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private Transform buttonsContainer;
     [SerializeField] private GameObject upgradeButtonPrefab;
+    [SerializeField] private PlayerLevel playerLevel;
 
     [Header("Configuration")]
     [SerializeField] private int numberOfChoices = 3;
@@ -34,12 +35,12 @@ public class UpgradeManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnLevelUp += ShowUpgradeMenu;
+        playerLevel.OnLevelUp += ShowUpgradeMenu;
     }
 
     private void OnDisable()
     {
-        GameManager.OnLevelUp -= ShowUpgradeMenu;
+        playerLevel.OnLevelUp -= ShowUpgradeMenu;
     }
 
     private void Start()

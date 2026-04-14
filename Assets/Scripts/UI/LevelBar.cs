@@ -9,6 +9,7 @@ public class LevelBar : MonoBehaviour
     [SerializeField] private Image xpBarFill;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI xpText;
+    [SerializeField] private PlayerLevel playerLevel;
 
     [Header("Animation")]
     [SerializeField] private float fillSpeed = 5f;
@@ -41,14 +42,14 @@ public class LevelBar : MonoBehaviour
 
     void OnEnable()
     {
-        GameManager.OnXPChanged += OnXPChanged;
-        GameManager.OnLevelUp += OnLevelUp;
+        playerLevel.OnXPChanged += OnXPChanged;
+        playerLevel.OnLevelUp += OnLevelUp;
     }
 
     void OnDisable()
     {
-        GameManager.OnXPChanged -= OnXPChanged;
-        GameManager.OnLevelUp -= OnLevelUp;
+        playerLevel.OnXPChanged -= OnXPChanged;
+        playerLevel.OnLevelUp -= OnLevelUp;
     }
 
     void Update()

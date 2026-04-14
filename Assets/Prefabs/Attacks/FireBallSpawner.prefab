@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5199647869038407737}
   - component: {fileID: 2594378951880617421}
   m_Layer: 0
-  m_Name: RandomFireBall
+  m_Name: FireBallSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

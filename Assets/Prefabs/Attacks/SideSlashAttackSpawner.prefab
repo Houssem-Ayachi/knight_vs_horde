@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6133427794196709923}
   - component: {fileID: 4873539749660541585}
   m_Layer: 0
-  m_Name: SideSlashAttackManager
+  m_Name: SideSlashAttackSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

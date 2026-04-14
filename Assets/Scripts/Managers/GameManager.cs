@@ -4,50 +4,26 @@ using UnityEngine.SceneManagement;
 
 public enum GameState { Menu, Playing, GameOver }
 
-/// <summary>
-/// Singleton persistant entre les scènes — gère l'état, le timer incrémental et l'XP.
-/// Noms de scènes attendus : "Main" (menu) et "Game" (jeu).
-/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    // ── Noms des scènes ──────────────────────────────────────────────────────
     private const string SCENE_MENU = "Main";
     private const string SCENE_GAME = "Game";
 
-    // ── XP Settings ─────────────────────────────────────────────────────────
-    [Header("XP / Leveling")]
-    [SerializeField] private int   baseXPPerLevel      = 100;
-    [SerializeField] private float xpScalingMultiplier = 1.5f;
+    public GameState State { get; private set; } = GameState.Menu;
+    public float ElapsedTime { get; private set; }
+    public int KillCount { get; private set; }
 
-    // ── Public read-only state ───────────────────────────────────────────────
-    public GameState State         { get; private set; } = GameState.Menu;
-    public float     ElapsedTime   { get; private set; }
-    public int       CurrentXP     { get; private set; }
-    public int       CurrentLevel  { get; private set; } = 1;
-    public int       XPToNextLevel { get; private set; }
-    public int       KillCount     { get; private set; }
-
-    public float XPProgress => XPToNextLevel > 0 ? (float)CurrentXP / XPToNextLevel : 0f;
-
-    // ── Events ───────────────────────────────────────────────────────────────
-    public static event Action                OnGameStart;
-    public static event Action                OnGameOver;
-    public static event Action<float>         OnTimerUpdate;      // secondes écoulées
-    public static event Action<int, int, float> OnXPChanged;      // current, max, progress
-    public static event Action<int>           OnLevelUp;          // nouveau niveau
-    public static event Action<int>           OnKillCountChanged; // total kills
-
-    // ────────────────────────────────────────────────────────────────────────
+    public static event Action OnGameStart;
+    public static event Action OnGameOver;
+    public static event Action<float> OnTimerUpdate;
+    public static event Action<int> OnKillCountChanged;
+    [SerializeField] private PlayerLevel playerLevel;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
         ResetStats();
@@ -55,14 +31,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Si on lance directement la scène Game (sans passer par le menu),
-        // on démarre automatiquement le jeu
-        string currentScene = SceneManager.GetActiveScene().name;
-        if (currentScene == SCENE_GAME && State != GameState.Playing)
-        {
+        if (SceneManager.GetActiveScene().name == SCENE_GAME && State != GameState.Playing)
             State = GameState.Playing;
-            XPToNextLevel = baseXPPerLevel;
-        }
     }
 
     private void Update()
@@ -72,19 +42,16 @@ public class GameManager : MonoBehaviour
         OnTimerUpdate?.Invoke(ElapsedTime);
     }
 
-    // ── Public API ───────────────────────────────────────────────────────────
-
-    /// <summary>Lance le jeu et charge la scène Game.</summary>
     public void StartGame()
     {
         ResetStats();
+        playerLevel.ResetStats();
         State = GameState.Playing;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SCENE_GAME);
         OnGameStart?.Invoke();
     }
 
-    /// <summary>Déclenche le Game Over et revient au menu.</summary>
     public void TriggerGameOver()
     {
         if (State == GameState.GameOver) return;
@@ -93,20 +60,20 @@ public class GameManager : MonoBehaviour
         OnGameOver?.Invoke();
     }
 
-    /// <summary>Rejouer — recharge la scène Game.</summary>
     public void RestartGame()
     {
         ResetStats();
+        playerLevel.ResetStats();
         State = GameState.Playing;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SCENE_GAME);
         OnGameStart?.Invoke();
     }
 
-    /// <summary>Retourner au menu principal.</summary>
     public void ReturnToMenu()
     {
         ResetStats();
+        playerLevel.ResetStats();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SCENE_MENU);
     }
@@ -120,49 +87,18 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    /// <summary>Ajouter des points XP (depuis les ennemis tués, etc.)</summary>
-    public void AddXP(int amount)
-    {
-        if (amount <= 0) return;
-        
-        // Si on n'est pas en mode Playing, on force le mode Playing
-        if (State != GameState.Playing)
-        {
-            State = GameState.Playing;
-        }
-
-        CurrentXP += amount;
-
-        // Level-up loop (en cas de gros gain d'XP d'un coup)
-        while (CurrentXP >= XPToNextLevel)
-        {
-            CurrentXP     -= XPToNextLevel;
-            CurrentLevel++;
-            XPToNextLevel  = Mathf.RoundToInt(baseXPPerLevel * Mathf.Pow(xpScalingMultiplier, CurrentLevel - 1));
-            OnLevelUp?.Invoke(CurrentLevel);
-        }
-
-        OnXPChanged?.Invoke(CurrentXP, XPToNextLevel, XPProgress);
-    }
-
-    /// <summary>Enregistrer un kill ennemi (appeler depuis l'ennemi mort)</summary>
-    public void RegisterKill(int xpReward = 20)
+    public void RegisterKill(int xpReward = 5)
     {
         if (State != GameState.Playing) return;
         KillCount++;
         OnKillCountChanged?.Invoke(KillCount);
-        AddXP(xpReward);
+        playerLevel.AddXP(xpReward);
     }
-
-    // ── Private helpers ──────────────────────────────────────────────────────
 
     private void ResetStats()
     {
-        ElapsedTime   = 0f;
-        CurrentXP     = 0;
-        CurrentLevel  = 1;
-        KillCount     = 0;
-        XPToNextLevel = baseXPPerLevel;
-        State         = GameState.Menu;
+        ElapsedTime = 0f;
+        KillCount = 0;
+        State = GameState.Menu;
     }
 }
