@@ -22,7 +22,6 @@ public class SideSlashAttack : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collided with smth");
         if(collision.tag == "Enemy")
         {
             collision.gameObject.GetComponent<Ennemy>().TakeDamage(damage);
