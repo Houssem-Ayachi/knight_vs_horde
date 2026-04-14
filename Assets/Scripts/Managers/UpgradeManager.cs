@@ -30,19 +30,16 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         Instance = this;
-        Debug.Log("[UpgradeManager] Awake - Instance créée");
     }
 
     private void OnEnable()
     {
         GameManager.OnLevelUp += ShowUpgradeMenu;
-        Debug.Log("[UpgradeManager] OnEnable - Abonné à OnLevelUp");
     }
 
     private void OnDisable()
     {
         GameManager.OnLevelUp -= ShowUpgradeMenu;
-        Debug.Log("[UpgradeManager] OnDisable - Désabonné de OnLevelUp");
     }
 
     private void Start()
@@ -50,8 +47,6 @@ public class UpgradeManager : MonoBehaviour
         // Masquer le panel au démarrage
         if (upgradePanel != null)
             upgradePanel.SetActive(false);
-
-        Debug.Log("[UpgradeManager] Start - Initialisé");
     }
 
     /// <summary>
@@ -59,11 +54,8 @@ public class UpgradeManager : MonoBehaviour
     /// </summary>
     public void ShowUpgradeMenu(int newLevel)
     {
-        Debug.Log($"[UpgradeManager] ShowUpgradeMenu appelé ! Niveau: {newLevel}");
-
         if (upgradePanel == null || upgradeButtonPrefab == null)
         {
-            Debug.LogError("[UpgradeManager] Références manquantes !");
             return;
         }
 
@@ -84,7 +76,6 @@ public class UpgradeManager : MonoBehaviour
 
         // Afficher
         upgradePanel.SetActive(true);
-        Debug.Log($"[UpgradeManager] Panel activé avec {randomUpgrades.Count} upgrades !");
     }
 
     private void CreateUpgradeButton(UpgradeData upgrade)
@@ -114,8 +105,6 @@ public class UpgradeManager : MonoBehaviour
     /// </summary>
     public void SelectUpgrade(UpgradeData upgrade)
     {
-        Debug.Log($"[UpgradeManager] Upgrade sélectionnée: {upgrade.title}");
-
         // Appliquer l'upgrade
         upgrade.ApplyUpgrade();
 

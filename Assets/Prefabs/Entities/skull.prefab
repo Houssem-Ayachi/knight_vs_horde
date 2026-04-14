@@ -182,6 +182,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ennemy
   enemyData: {fileID: 11400000, guid: feabafbf20e7cd7ad995240d85859b89, type: 2}
   bounceDistance: 50
+  flashMaterial: {fileID: 2100000, guid: d2dc684be392ce02ab4ec9c875365702, type: 2}
+  defaultMaterial: {fileID: 0}
 --- !u!114 &-2318457782807754925
 MonoBehaviour:
   m_ObjectHideFlags: 0

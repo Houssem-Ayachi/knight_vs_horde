@@ -55,7 +55,6 @@ public class PlayerStats : MonoBehaviour
     public void IncreaseWeaponDamage(float percentageIncrease)
     {
         WeaponDamageMultiplier += percentageIncrease / 100f;
-        Debug.Log($"[PlayerStats] Dégâts: x{WeaponDamageMultiplier:F2}");
     }
 
     /// <summary>
@@ -65,7 +64,6 @@ public class PlayerStats : MonoBehaviour
     {
         CurrentMaxHealth += amount;
         CurrentHealth += amount;
-        Debug.Log($"[PlayerStats] HP Max: {CurrentMaxHealth}, HP actuel: {CurrentHealth}");
         
         // Notifier que la santé a changé
         OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
@@ -77,7 +75,6 @@ public class PlayerStats : MonoBehaviour
     public void IncreaseSpeed(float percentageIncrease)
     {
         CurrentSpeed += baseSpeed * (percentageIncrease / 100f);
-        Debug.Log($"[PlayerStats] Vitesse: {CurrentSpeed:F1}");
     }
 
     /// <summary>
@@ -86,7 +83,6 @@ public class PlayerStats : MonoBehaviour
     public void IncreaseArmor(float amount)
     {
         Armor = Mathf.Min(Armor + amount, 75f);
-        Debug.Log($"[PlayerStats] Armure: {Armor}%");
     }
 
     /// <summary>
@@ -95,7 +91,6 @@ public class PlayerStats : MonoBehaviour
     public void IncreaseAttackSpeed(float percentageIncrease)
     {
         AttackSpeedMultiplier += percentageIncrease / 100f;
-        Debug.Log($"[PlayerStats] Vitesse d'attaque: x{AttackSpeedMultiplier:F2}");
     }
 
     /// <summary>
@@ -104,7 +99,6 @@ public class PlayerStats : MonoBehaviour
     public void Heal(int amount)
     {
         CurrentHealth = Mathf.Min(CurrentHealth + amount, CurrentMaxHealth);
-        Debug.Log($"[PlayerStats] Soigné! HP: {CurrentHealth}/{CurrentMaxHealth}");
         
         // Notifier que la santé a changé
         OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);
@@ -120,7 +114,6 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
-        Debug.Log($"[PlayerStats] Dégâts reçus: {damage}, HP restant: {CurrentHealth}/{CurrentMaxHealth}");
         
         // Notifier que la santé a changé
         OnHealthChanged?.Invoke(CurrentHealth, CurrentMaxHealth);

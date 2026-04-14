@@ -101,7 +101,6 @@ public class WaveManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             totalXPGained = CalculateTotalXP();
-            Debug.Log($"XP total accumulé : {totalXPGained}");
         }
     }
     // Cette méthode calcule l'XP total accumulé en fonction du niveau actuel et de l'XP vers le prochain niveau
@@ -146,8 +145,6 @@ public class WaveManager : MonoBehaviour
 
         waves[waveIndex].isActive = true;
         currentWaveIndex = waveIndex;
-
-        Debug.Log($"🌊 VAGUE {waveIndex + 1} ACTIVÉE ! (XP Seuil: {waves[waveIndex].xpThreshold})");
 
         // Désactiver les vagues précédentes
         for (int i = 0; i < waveIndex; i++)

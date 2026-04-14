@@ -116,7 +116,5 @@ public class Player : MonoBehaviour
         hbSize.x = healthBarWidth * healthPercentage;
 
         HealthBarSpriteRenderer.size = hbSize;
-
-        Debug.Log($"[Player] Barre de vie mise à jour: {healthPercentage * 100:F0}%");
     }
 }
