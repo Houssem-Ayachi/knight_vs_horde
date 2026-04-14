@@ -201,10 +201,10 @@ public class WaveManager : MonoBehaviour
                         enemy.transform.position = spawnPos;
                         enemy.transform.rotation = Quaternion.identity;
 
-                        Ennemy enemyScript = enemy.GetComponent<Ennemy>();
-                        if (enemyScript != null)
+                        Poolable enemyPoolableComponent = enemy.GetComponent<Poolable>();
+                        if (enemyPoolableComponent != null)
                         {
-                            enemyScript.SetEnemyPool(pool);
+                            // enemyPoolableComponent.Pool = pool;
                         }
                     }
                 }
