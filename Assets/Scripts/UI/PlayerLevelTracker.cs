@@ -14,8 +14,6 @@ public class PlayerLevelTracker : MonoBehaviour
     {
         levelText = GetComponent<TextMeshProUGUI>();
 
-        Debug.Log(levelText);
-
         playerLevel = player.GetComponent<PlayerLevel>();
     }
 

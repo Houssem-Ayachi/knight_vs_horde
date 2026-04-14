@@ -46,7 +46,6 @@ public class PoolManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("XPOrb Prefab non assign� dans le PoolManager !");
         }
 
         // Initialiser les pools d'ennemis (optionnel)
@@ -65,7 +64,6 @@ public class PoolManager : MonoBehaviour
                     pool.Initialize(enemyPrefabs[i], enemyPoolSize, true);
 
                     enemyPools[i] = pool;
-                    Debug.Log($"Enemy Pool '{enemyPrefabs[i].name}' initialis� avec {enemyPoolSize} objets.");
                 }
             }
         }

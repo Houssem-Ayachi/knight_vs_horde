@@ -1,40 +1,53 @@
+using System;
 using UnityEngine;
 
 public class PlayerLevel : MonoBehaviour
 {
-    private int currentLevel = 1;
-    private int xpAmountToNextLevel = 100;
-    private int currentXpCollected = 0;
+    public static PlayerLevel Instance;
 
-    public int CurrentLevel { get { return currentLevel; }}
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [Header("XP / Leveling")]
+    [SerializeField] private int baseXPPerLevel = 30;
+    [SerializeField] private float xpScalingMultiplier = 1.1f;
 
-    // Update is called once per frame
-    void Update()
+    public int CurrentXP { get; private set; }
+    public int CurrentLevel { get; private set; } = 1;
+    public int XPToNextLevel { get; private set; }
+    public float XPProgress => XPToNextLevel > 0 ? (float)CurrentXP / XPToNextLevel : 0f;
+
+    public event Action<int, int, float> OnXPChanged;
+    public event Action<int> OnLevelUp;
+
+    private void Awake()
     {
-        
+        if(Instance != null)
+            Destroy(this);
+        Instance = this;
+
+        DontDestroyOnLoad(gameObject);
+        ResetStats();
     }
 
     public void AddXP(int amount)
     {
-        currentXpCollected += amount;
+        if (amount <= 0) return;
 
-        if(currentXpCollected >= xpAmountToNextLevel)
+        CurrentXP += amount;
+
+        while (CurrentXP >= XPToNextLevel)
         {
-            int remainingXp = currentXpCollected - xpAmountToNextLevel;
-
-            currentLevel++;
-
-            currentXpCollected = remainingXp;
-
-            Debug.Log("level up!! -> " + currentLevel);
-
-            // TODO: increase the xpAmountToNextLevel attribute
+            CurrentXP -= XPToNextLevel;
+            CurrentLevel++;
+            XPToNextLevel = Mathf.RoundToInt(baseXPPerLevel * Mathf.Pow(xpScalingMultiplier, CurrentLevel - 1));
+            OnLevelUp?.Invoke(CurrentLevel);
         }
+
+        OnXPChanged?.Invoke(CurrentXP, XPToNextLevel, XPProgress);
+    }
+
+    public void ResetStats()
+    {
+        CurrentXP = 0;
+        CurrentLevel = 1;
+        XPToNextLevel = baseXPPerLevel;
     }
 }

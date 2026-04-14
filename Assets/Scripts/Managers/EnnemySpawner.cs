@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int enemiesPerSpawn;
 
     [Header("Limite d'ennemis")]
-    [SerializeField] private int maxEnemies = 20;
+    [SerializeField] private int maxEnemies = 10;
 
     private float timer = 0;
 
@@ -52,10 +52,5 @@ public class EnemySpawner : MonoBehaviour
         enemy.transform.rotation = Quaternion.identity;
 
         // Informer l'ennemi de son pool
-        Ennemy enemyScript = enemy.GetComponent<Ennemy>();
-        if (enemyScript != null)
-        {
-            // enemyScript.SetEnemyPool(pool);
-        }
     }
 }

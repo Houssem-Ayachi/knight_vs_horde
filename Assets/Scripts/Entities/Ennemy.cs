@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Ennemy : MonoBehaviour
@@ -13,16 +14,14 @@ public class Ennemy : MonoBehaviour
 
     public float bounceDistance = 50;
 
+    [SerializeField] private Material flashMaterial;
+    private SpriteRenderer spriteRenderer;
+
     void Start()
     {
-        if (enemyData == null)
-        {
-            Debug.LogError("EnemyData non assigné sur " + gameObject.name);
-            return;
-        }
-
         rb = GetComponent<Rigidbody2D>();
         poolable = GetComponent<Poolable>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
@@ -86,6 +85,8 @@ public class Ennemy : MonoBehaviour
     {
         GameObject xpOrb = PoolManager1.Instance.GetPoolItem(EPoolItemType.XpOrb);
 
+        spriteRenderer.color = Color.white;
+
         // place the orb at the same position as this current enemy.
         xpOrb.transform.position = transform.position;
 
@@ -96,8 +97,7 @@ public class Ennemy : MonoBehaviour
     {
         currentHealth -= damage;
 
-        // TODO: make the enemy flash with a red color to indicate a hit.
-
+        FlashRed();
         Bounce(playerTransform.position);
 
         if (currentHealth <= 0)
@@ -120,5 +120,18 @@ public class Ennemy : MonoBehaviour
     private void StopBouncing()
     {
         isBouncing = false;
+    }
+
+    public void FlashRed()
+    {
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(FlashCoroutine());
+    }
+
+    private IEnumerator FlashCoroutine()
+    {
+        spriteRenderer.color = Color.softRed;
+        yield return new WaitForSeconds(1f);
+        spriteRenderer.color = Color.white;
     }
 }

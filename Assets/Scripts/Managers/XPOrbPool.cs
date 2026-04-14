@@ -14,7 +14,6 @@ public class XPOrbPool : MonoBehaviour
     {
         if (isInitialized)
         {
-            Debug.LogWarning("XPOrbPool déjà initialisé !");
             return;
         }
 

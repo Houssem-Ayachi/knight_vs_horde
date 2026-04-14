@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4595456822103202669}
   - component: {fileID: 2546812454321822119}
   - component: {fileID: 8130665982018988113}
+  - component: {fileID: 5638176341475188436}
   m_Layer: 0
   m_Name: FireBall
   m_TagString: Untagged
@@ -111,8 +112,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
   direction: {x: 0, y: 0}
-  speed: 15
+  speed: 12
   damage: 100
+  player: {fileID: 0}
 --- !u!212 &8130665982018988113
 SpriteRenderer:
   serializedVersion: 2
@@ -172,3 +174,16 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &5638176341475188436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669892363717048337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04c78d4c15e81654aee7fdaf0ea3417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  damage: 100

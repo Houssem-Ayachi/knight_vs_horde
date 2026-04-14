@@ -78,7 +78,8 @@ public class XPOrb : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // player handles retrieving XP. (TODO: might change it later, make this script call a function on the player, dunno which is better)
+            PlayerLevel.Instance.AddXP(10);
+
             ReturnToPool();
         }
     }
