@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// D�finit les types d'upgrades disponibles
+/// Definit les types d'upgrades disponibles
 /// </summary>
 public enum UpgradeType
 {
@@ -16,7 +16,7 @@ public enum UpgradeType
 }
 
 /// <summary>
-/// Classe contenant les donn�es d'une upgrade
+/// Classe contenant les donnees d'une upgrade
 /// </summary>
 public class UpgradeData
 {
@@ -33,7 +33,7 @@ public class UpgradeData
 }
 
 /// <summary>
-/// G�n�re automatiquement les upgrades bas�es sur les UpgradeType
+/// Genere automatiquement les upgrades basees sur les UpgradeType
 /// </summary>
 public static class UpgradeFactory
 {
@@ -102,11 +102,6 @@ public static class UpgradeFactory
 
     private static void ApplyUpgradeEffect(UpgradeType type, float value)
     {
-        if (PlayerStats.Instance == null)
-        {
-            return;
-        }
-
         switch (type)
         {
             case UpgradeType.WeaponDamage:
@@ -139,7 +134,7 @@ public static class UpgradeFactory
     {
         List<UpgradeData> allUpgrades = GenerateAllUpgrades();
 
-        // M�langer (Fisher-Yates shuffle)
+        // Melanger (Fisher-Yates shuffle)
         for (int i = allUpgrades.Count - 1; i > 0; i--)
         {
             int j = UnityEngine.Random.Range(0, i + 1);
