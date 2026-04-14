@@ -31,4 +31,12 @@ public class RotatingSword : MonoBehaviour
         // Optional: make the weapon always point outward from the player
         transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle); 
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<Ennemy>().TakeDamage(damage);
+        }
+    }
 }

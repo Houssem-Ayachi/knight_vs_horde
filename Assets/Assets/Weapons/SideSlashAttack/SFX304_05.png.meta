@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4f9d3c2269a6c28c48b7b47e6b479273
+guid: e3541e3c24908212db8fc89e779975a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5687666349546342197
-    second: vampire_0
+      213: 4067185420343384206
+    second: SFX304_05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: vampire_0
+      name: SFX304_05_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 14
-        height: 16
+        width: 35
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bc8f852f6995111b0800000000000000
-      internalID: -5687666349546342197
+      spriteID: e881737479b817830800000000000000
+      internalID: 4067185420343384206
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      vampire_0: -5687666349546342197
+      SFX304_05_0: 4067185420343384206
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

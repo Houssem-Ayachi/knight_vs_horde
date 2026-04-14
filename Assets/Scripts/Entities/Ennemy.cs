@@ -79,13 +79,7 @@ public class Ennemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag != "Weapon")
-            return;
 
-        int damageTaken = collision.gameObject.GetComponent<Weapon>().damage;
-        TakeDamage(damageTaken);
-
-        Bounce(collision.transform.position);
     }
 
     public void Die()
