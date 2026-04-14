@@ -105,7 +105,6 @@ public class PoolManager : MonoBehaviour
             XPOrb orbScript = orb.GetComponent<XPOrb>();
             if (orbScript != null)
             {
-                orbScript.SetOrbPool(xpOrbPool);
                 orbScript.SetXPValue(xpValue);
             }
         }

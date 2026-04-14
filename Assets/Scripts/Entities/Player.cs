@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 
     public PlayerDefaults playerDefaultStats;
     public GameObject HealthBar;
+    public int xFacingDirection = 1;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -53,6 +54,8 @@ public class Player : MonoBehaviour
         if (_direction.x != 0)
         {
             spriteRenderer.flipX = _direction.x < 0;
+
+            xFacingDirection = _direction.x < 0 ? -1 : 1;
         }
 
         if (!_direction.Equals(Vector2.zero))
